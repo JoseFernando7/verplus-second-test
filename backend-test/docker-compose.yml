@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  test-backend-app:
+    container_name: backend-app
+    image: backend-app:1.0.0
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://app-db:5432/test_2
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+    depends_on:
+      - app-db
+
+  app-db:
+    container_name: app-db
+    image: postgres:12
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test_2
