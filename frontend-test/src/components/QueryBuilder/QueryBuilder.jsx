@@ -1,33 +1,53 @@
-import React, { useState } from 'react';
-import { QueryBuilder, formatQuery } from 'react-querybuilder';
-import { fields } from './Fields';
-import 'react-querybuilder/dist/query-builder.css';
-import './styles.css';
+import React, { useRef } from 'react'
+import ColumnSelection from './ColumnSelection/ColumnSelection'
+import Conditions from './Conditions/Conditions'
+import TerminationClause from './TerminationClause/TerminationClause'
 
-const initialQuery = { combinator: 'and', rules: [] };
+function QueryBuilder () {
+  const columnSelectionRef = useRef()
+  const conditionRef = useRef()
+  const terminationClauseRef = useRef()
 
-function QueryBuilderService () {
-  const [query, setQuery] = useState(initialQuery)
+  const handleBuildQuery = () => {
+    const columnSelectionValue = columnSelectionRef.current.getValue()
+    const conditionResult = conditionRef.current.getValues()
+    const terminationClauseResult = terminationClauseRef.current.getValues()
 
-  const handleQueryChange = (newQuery) => {
-    setQuery(newQuery);
-  }
+    const conditionValues = Object.entries(conditionResult).map(([columnName, condition]) => {
+      if (typeof condition === 'object') {
+        // For complex conditions (with operators and values)
+        return `${columnName} ${condition.operator} ${condition.value}`
+      } else {
+        // For simple conditions (with values only)
+        return `${columnName} = '${condition}'`
+      }
+    })
 
-  const showQuery = () =>{
-    const sql = formatQuery(query, 'sql')
-    console.log(sql)
+    const whereClause = conditionValues.length > 0 ? `WHERE ${conditionValues.join(' AND ')}` : ''
+
+    const terminationValues = Object.entries(terminationClauseResult).map(([columnName, clause]) => {
+      if (columnName === 'orderBy') {
+        return `ORDER BY ${clause}`
+      } else {
+        return `${columnName} ${clause}`
+      }
+    })
+
+    const terminationClause = terminationValues.length > 0 ? `${terminationValues.join(' ')}` : ''
+
+    const query = `SELECT '${columnSelectionValue}' FROM tabla ${whereClause} ${terminationClause}`
+    console.log(query)
   }
 
   return (
     <>
-      <QueryBuilder fields={fields} query={query} onQueryChange={handleQueryChange} />
-      <h4>
-        SQL as result of <code> formatQuery(query, 'sql') </code>
-      </h4>
-      <pre> { formatQuery(query, 'sql') } </pre>
-      <button onClick={showQuery}> Save query </button>
-    </>
-  );
-};
+      <ColumnSelection ref={columnSelectionRef} />
+      <Conditions ref={conditionRef} />
+      <TerminationClause ref={terminationClauseRef} />
 
-export default QueryBuilderService
+      <button onClick={handleBuildQuery}> Build Query </button>
+    </>
+  )
+}
+
+export default QueryBuilder
