@@ -6,15 +6,29 @@ const ColumnSelection = forwardRef((props, ref) => {
     dma_id: false,
     term: false,
     week: false,
-    rank: false,
+    rank: true,
     refresh_date: false
   })
 
   const handleColumnSelection = (columnName) => {
-    setSelectedColumns((prevSelectedColumns) => ({
-      ...prevSelectedColumns,
-      [columnName]: !prevSelectedColumns[columnName]
-    }))
+    setSelectedColumns((prevSelectedColumns) => {
+      const newSelectedColumns = { ...prevSelectedColumns }
+
+      // Mantener seleccionada la columna 'rank'
+      newSelectedColumns.rank = true
+
+      // Deseleccionar todas las demás columnas
+      Object.keys(newSelectedColumns).forEach((key) => {
+        if (key !== columnName && key !== 'rank') {
+          newSelectedColumns[key] = false
+        }
+      })
+
+      // Invertir el estado de la columna actual
+      newSelectedColumns[columnName] = !prevSelectedColumns[columnName]
+
+      return newSelectedColumns
+    })
   }
 
   // Assign the state to ref when the state changes
@@ -38,7 +52,11 @@ const ColumnSelection = forwardRef((props, ref) => {
 
         {Object.keys(selectedColumns).map((columnName) => (
           <span key={columnName}>
-            <input type='checkbox' name={columnName} id={columnName} checked={selectedColumns[columnName]} onChange={() => handleColumnSelection(columnName)} />
+            <input
+              type='checkbox' name={columnName} id={columnName}
+              checked={selectedColumns[columnName]}
+              disabled={columnName === 'rank'} onChange={() => handleColumnSelection(columnName)}
+            />
             <label htmlFor={columnName}> {columnName.replace('_', ' ')} </label>
           </span>
         ))}

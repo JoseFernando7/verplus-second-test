@@ -2,13 +2,17 @@ import React, { useRef } from 'react'
 import ColumnSelection from './ColumnSelection/ColumnSelection'
 import Conditions from './Conditions/Conditions'
 import TerminationClause from './TerminationClause/TerminationClause'
+import { sendQuery } from '../../service/postQuery'
+import { useData } from '../../context/DataContext'
 
 function QueryBuilder () {
+  const { setAppData } = useData()
+
   const columnSelectionRef = useRef()
   const conditionRef = useRef()
   const terminationClauseRef = useRef()
 
-  const handleBuildQuery = () => {
+  const handleBuildQuery = async () => {
     const columnSelectionValue = columnSelectionRef.current.getValue()
     const conditionResult = conditionRef.current.getValues()
     const terminationClauseResult = terminationClauseRef.current.getValues()
@@ -16,7 +20,10 @@ function QueryBuilder () {
     const conditionValues = Object.entries(conditionResult).map(([columnName, condition]) => {
       if (typeof condition === 'object') {
         // For complex conditions (with operators and values)
-        return `${columnName} ${condition.operator} ${condition.value}`
+        if (typeof condition.value === 'number') {
+          return `${columnName} ${condition.operator} ${condition.value}`
+        }
+        return `${columnName} ${condition.operator} '${condition.value}'`
       } else {
         // For simple conditions (with values only)
         return `${columnName} = '${condition}'`
@@ -35,8 +42,10 @@ function QueryBuilder () {
 
     const terminationClause = terminationValues.length > 0 ? `${terminationValues.join(' ')}` : ''
 
-    const query = `SELECT '${columnSelectionValue}' FROM tabla ${whereClause} ${terminationClause}`
-    console.log(query)
+    const query = `SELECT ${columnSelectionValue} FROM bigquery-public-data.google_trends.top_terms ${whereClause} ${terminationClause}`
+
+    const response = await sendQuery(query, columnSelectionValue)
+    setAppData(response)
   }
 
   return (

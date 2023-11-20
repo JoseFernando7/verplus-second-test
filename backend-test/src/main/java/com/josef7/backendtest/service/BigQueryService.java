@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class BigQueryService
 {
-    public String getData(String sqlQuery) throws InterruptedException, IOException
+    public List<QueryResponse> getData(String query, List<String> columns) throws InterruptedException, IOException
     {
         String jsonPath = "/home/josef7/programacion/ver+/second-test/backend-test/CloudDemo_jf7_service.json";
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath));
@@ -20,12 +18,7 @@ public class BigQueryService
         BigQuery bigQuery = BigQueryOptions.newBuilder().setCredentials(credentials).build().getService();
 
         QueryJobConfiguration queryConfig =
-                QueryJobConfiguration.newBuilder(
-                                "SELECT * "
-                                        + "FROM `bigquery-public-data.google_trends.top_terms` "
-                                        + "WHERE " + sqlQuery
-                                        + "LIMIT 10 "
-                        )
+                QueryJobConfiguration.newBuilder(query)
                         .setUseLegacySql(false)
                         .build();
 
@@ -44,19 +37,25 @@ public class BigQueryService
         }
 
         TableResult result = queryJob.getQueryResults();
+        List<QueryResponse> resultInfo = new ArrayList<>();
 
-        StringBuilder resultInfo = new StringBuilder();
+        for (String column : columns) {
+            QueryResponse queryResponse = new QueryResponse();
+            List<Object> values = new ArrayList<>();
 
-        for (FieldValueList row : result.iterateAll())
-        {
-            String dmaName = row.get("dma_name").getStringValue();
+            for (FieldValueList row : result.iterateAll()) {
+                if (row.get(column) != null) {
+                    // Agrega el valor directamente a la lista de objetos
+                    values.add(row.get(column).getStringValue());
+                }
+            }
 
-            // Agregar la información de la fila al StringBuilder
-            resultInfo.append("\nDma Name: ").append(dmaName)
-                    .append("\n\n"); // Separador para cada fila
+            // Configura la lista de objetos en el QueryResponse
+            queryResponse.setResponse(values);
+            resultInfo.add(queryResponse);
         }
 
-        return resultInfo.toString();
+        return resultInfo;
     }
 
     public ResponseEntity<List<Integer>> getDMAs() throws InterruptedException, IOException

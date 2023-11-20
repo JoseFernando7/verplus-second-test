@@ -1,11 +1,14 @@
 package com.josef7.backendtest.controller;
 
 import com.josef7.backendtest.service.BigQueryService;
+import com.josef7.backendtest.service.QueryRequest;
+import com.josef7.backendtest.service.QueryResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,10 +31,9 @@ public class BigQueryController
     }
 
     @PostMapping("/add-sql")
-    public ResponseEntity<String> addSql(@RequestBody String newSql) throws IOException, InterruptedException
+    public ResponseEntity<List<QueryResponse>> addSql(@RequestBody QueryRequest request) throws IOException, InterruptedException
     {
-        String queryResult = queryService.getData(newSql);
-
-        return new ResponseEntity<>(queryResult, HttpStatus.CREATED);
+        List<QueryResponse> result = queryService.getData(request.getQuery(), request.getFields());
+        return ResponseEntity.ok(result);
     }
 }
