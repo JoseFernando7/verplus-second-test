@@ -6,10 +6,22 @@ import PropTypes from 'prop-types'
 import { sendUser } from '../service/postUser'
 
 SaveModal.propTypes = {
+  /**
+   * The info of the other column selected by the user.
+   */
   response1: PropTypes.array,
+  /**
+   * The info of the rank column selected by the user.
+   */
   response2: PropTypes.array
 }
 
+/**
+ * Component that shows and hides a modal to save a query. It creates a JavaScript object with the informatio of the modal (username, query_name, comment and query columns information).
+ * @component
+ * @param {*} {} - An object with the info of the other column selected by the user.
+ * @returns - JSX.Element that renders the modal.
+ */
 function SaveModal ({ response1, response2 }) {
   const [show, setShow] = useState(false)
   const [formData, setFormData] = useState({
@@ -27,6 +39,7 @@ function SaveModal ({ response1, response2 }) {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
+  // Handles the change of the inputs of the modal.
   const handleChange = (e) => {
     const { name, value } = e.target
 

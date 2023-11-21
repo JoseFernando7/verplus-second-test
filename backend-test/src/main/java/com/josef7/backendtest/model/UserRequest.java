@@ -4,6 +4,12 @@ import jakarta.persistence.Column;
 
 import java.util.List;
 
+/**
+ * The query entity that marks the structure of the user object that the server receives.
+ *
+ * @author josef7
+ * @version 1.0.0
+ */
 public class UserRequest
 {
     @Column(name = "username")

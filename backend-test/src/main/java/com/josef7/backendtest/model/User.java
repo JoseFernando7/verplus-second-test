@@ -5,6 +5,12 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The query entity that marks the structure of the query table.
+ *
+ * @author josef7
+ * @version 1.0.0
+ */
 @Entity
 @Table(name = "user-info")
 public class User

@@ -1,11 +1,15 @@
 package com.josef7.backendtest.model;
 
-import com.josef7.backendtest.service.ListObjectConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 
 import java.util.List;
 
+/**
+ * The query entity that marks the structure of the query object that the server receives.
+ *
+ * @author josef7
+ * @version 1.0.0
+ */
 public class QueryRequest
 {
     @Column(name = "query_name")
@@ -28,15 +32,6 @@ public class QueryRequest
     public void setQuery_name(String query_name) {
         this.query_name = query_name;
     }
-
-//    public List<Object> getOther_column() {
-//        return other_column;
-//    }
-//
-//    public void setOther_column(List<Object> other_column) {
-//        this.other_column = other_column;
-//    }
-
 
     public List<String> getOther_column() {
         return other_column;

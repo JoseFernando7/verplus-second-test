@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This controller is responsible for manage all the query requests to the users/queries database.
+ *
+ * @author josef7
+ * @version 1.0.0
+ */
 @RestController
 @RequestMapping("/api/v1/queries")
 public class QueryController
@@ -18,18 +24,12 @@ public class QueryController
     @Autowired
     private QueryRepository queryRepository;
 
-    @GetMapping("/")
-    public List<Query> getQueries()
-    {
-        return queryRepository.findAll();
-    }
-
-    @GetMapping("/one-query/{query_id}")
-    public User getOneQuery(@PathVariable Long query_id)
-    {
-        return queryRepository.findId1Query(query_id);
-    }
-
+    /**
+     * Manages the POST request through the endpoint.
+     *
+     * @param newQuery - The query object that the user saves.
+     * @return - A 201 status code (CREATED)
+     */
     @PostMapping("/add-query")
     public ResponseEntity<Query> addQuery(@RequestBody Query newQuery)
     {

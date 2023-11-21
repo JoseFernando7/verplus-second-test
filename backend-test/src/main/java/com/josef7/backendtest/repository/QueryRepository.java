@@ -6,9 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * JpaRepository of the Query entities.
+ *
+ * @author josef7
+ * @version 1.0.0
+ */
 @Repository
 public interface QueryRepository extends JpaRepository<Query, Long>
 {
-    @org.springframework.data.jpa.repository.Query("SELECT u FROM User u WHERE u.id = :id")
-    User findId1Query(@Param("id") Long id);
+
 }

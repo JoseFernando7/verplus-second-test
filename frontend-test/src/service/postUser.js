@@ -1,3 +1,8 @@
+/**
+ * Send the user data to the server to save it in the database.
+ * @param {object} formData - The user data to be saved.
+ * @returns - A text from the server indicating the status of the request.
+ */
 export const sendUser = async (formData) => {
   try {
     const response = await fetch('http://localhost:8080/api/v1/users/add-user', {

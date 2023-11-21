@@ -2,6 +2,10 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import { dmaNames } from '../../../utils/dmaNames'
 import { comparisonOperators } from '../../../utils/comparisonOperators'
 
+/**
+ * Component that renders all the condition options to build the WHERE clause. It use the forwardRef function.
+ * @component
+ */
 const Conditions = forwardRef((props, ref) => {
   const [isDmaNameChecked, setIsDmaNameChecked] = useState(false)
   const [isDmaIdChecked, setIsDmaIdChecked] = useState(false)
@@ -18,26 +22,44 @@ const Conditions = forwardRef((props, ref) => {
   const rankSelectRef = useRef()
   const refreshDateSelectRef = useRef()
 
+  /**
+   * Set if the DMA name checkbox is selected.
+   */
   const handleDmaNameCheckboxChange = () => {
     setIsDmaNameChecked(!isDmaNameChecked)
   }
 
+  /**
+   * Set if the DMA id checkbox is selected.
+   */
   const handleDmaIdCheckboxChange = () => {
     setIsDmaIdChecked(!isDmaIdChecked)
   }
 
+  /**
+   * Set if the term checkbox is selected.
+   */
   const handleTermCheckboxChange = () => {
     setIsTermChecked(!isTermChecked)
   }
 
+  /**
+   * Set if the week checkbox is selected.
+   */
   const handleWeekCheckboxChange = () => {
     setIsWeekChecked(!isWeekChecked)
   }
 
+  /**
+   * Set if the rank checkbox is selected.
+   */
   const handleRankCheckboxChange = () => {
     setIsRankChecked(!isRankChecked)
   }
 
+  /**
+   * Set if the refresh date checkbox is selected.
+   */
   const handleRefreshDateCheckboxChange = () => {
     setIsRefreshDateChecked(!isRefreshDateChecked)
   }

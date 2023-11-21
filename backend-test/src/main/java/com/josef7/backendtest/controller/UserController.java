@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * This controller is responsible for manage all the user requests to the database.
+ *
+ * @author josef7
+ * @version 1.0.0
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/users")
@@ -24,18 +30,23 @@ public class UserController
     @Autowired
     private QueryRepository queryRepository;
 
+    /**
+     * Get all the users stored in the database.
+     *
+     * @return - All the users in database.
+     */
     @GetMapping("/")
     public List<User> getUsers()
     {
         return userRespository.findAll();
     }
 
-    @GetMapping("/one-user/{user_id}")
-    public User getOneUser(@PathVariable Long user_id)
-    {
-        return userRespository.findId1User(user_id);
-    }
-
+    /**
+     * With the UserRequest param sets the object of a new user and stores it in the database.
+     *
+     * @param newUser - The object of the user entity.
+     * @return - A message of success if everything goes well.
+     */
     @PostMapping("/add-user")
     public ResponseEntity<String> addUser(@RequestBody UserRequest newUser)
     {
@@ -61,6 +72,6 @@ public class UserController
 
         userRespository.save(user);
 
-        return ResponseEntity.ok("Data almacenado con éxito");
+        return ResponseEntity.ok("Data saved successfully");
     }
 }

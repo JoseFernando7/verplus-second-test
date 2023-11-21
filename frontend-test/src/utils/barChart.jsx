@@ -24,10 +24,21 @@ ChartJS.register(
 )
 
 BarChart.propTypes = {
+  /**
+   * The information of the other column selected by the user
+   */
   response1: PropTypes.array.isRequired,
+
+  /**
+   * The information of the column rank.
+   */
   response2: PropTypes.array.isRequired
 }
 
+/**
+ * Component that shows a bar chart with the information that the server returns of the bigquery.
+ * @returns - The render of the bar chart.
+ */
 export default function BarChart ({ response1, response2 }) {
   const options = {
     responsive: true,

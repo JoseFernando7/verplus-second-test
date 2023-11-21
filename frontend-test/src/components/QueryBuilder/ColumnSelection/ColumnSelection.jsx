@@ -1,5 +1,9 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 
+/**
+ * Component that renders all the column options using the forwardRef function, with rank selected by default
+ * @component
+ */
 const ColumnSelection = forwardRef((props, ref) => {
   const [selectedColumns, setSelectedColumns] = useState({
     dma_name: false,
@@ -10,21 +14,25 @@ const ColumnSelection = forwardRef((props, ref) => {
     refresh_date: false
   })
 
+  /**
+   * Use the column name to toggle the state of the column
+   * @param {string} columnName - The name of the column to toggle in the state object
+   */
   const handleColumnSelection = (columnName) => {
     setSelectedColumns((prevSelectedColumns) => {
       const newSelectedColumns = { ...prevSelectedColumns }
 
-      // Mantener seleccionada la columna 'rank'
+      // Keep 'rank' selected by default
       newSelectedColumns.rank = true
 
-      // Deseleccionar todas las demás columnas
+      // Deselect the other columns
       Object.keys(newSelectedColumns).forEach((key) => {
         if (key !== columnName && key !== 'rank') {
           newSelectedColumns[key] = false
         }
       })
 
-      // Invertir el estado de la columna actual
+      // Invert the state of the actual column
       newSelectedColumns[columnName] = !prevSelectedColumns[columnName]
 
       return newSelectedColumns

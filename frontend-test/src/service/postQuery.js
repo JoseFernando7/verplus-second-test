@@ -1,3 +1,9 @@
+/**
+ * Send the query that the user built in a POST request.
+ * @param {string} query
+ * @param {string} fields
+ * @returns - The response from the server. The data that the bigquery dataset returns after the server process the query.
+ */
 export const sendQuery = async (query, fields) => {
   try {
     // const sqlQuery = { query, columns }

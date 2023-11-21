@@ -1,6 +1,10 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import { columnNames } from '../../../utils/comparisonOperators'
 
+/**
+ * Component that renders the termination clause and get the informatio selected by the user.
+ * @component
+ */
 const TerminationClause = forwardRef((props, ref) => {
   const [isLimitChecked, setIsLimitChecked] = useState(false)
   const [isOrderByChecked, setIsOrderByChecked] = useState(false)
@@ -8,14 +12,21 @@ const TerminationClause = forwardRef((props, ref) => {
   const limitSelectRef = useRef()
   const orderBySelectRef = useRef()
 
+  /**
+   * Set the state of the limit input.
+   */
   const handleLimitCheckboxChange = () => {
     setIsLimitChecked(!isLimitChecked)
   }
 
+  /**
+   * Set the state of the order by input.
+   */
   const handleOrderByCheckboxChange = () => {
     setIsOrderByChecked(!isOrderByChecked)
   }
 
+  // Update the ref with the current values of the limit and order by inputs when the component is mounted.
   useEffect(() => {
     if (ref) {
       ref.current = {

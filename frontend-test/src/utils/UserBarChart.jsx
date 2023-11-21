@@ -24,10 +24,21 @@ ChartJS.register(
 )
 
 UserBarChart.propTypes = {
+  /**
+   * The info of the other column selected fetched from the server.
+   */
   response1: PropTypes.array.isRequired,
+  /**
+   * The info of the rank column selected fetched from the server.
+   */
   response2: PropTypes.array.isRequired
 }
 
+/**
+ * Component that renders a bar chart with the info of the query saved by the user selected.
+ * @param {*} {} - An object with the info of the json object fetched.
+ * @returns - JSX.Element with the bar chart.
+ */
 export default function UserBarChart ({ response1, response2 }) {
   const options = {
     responsive: true,

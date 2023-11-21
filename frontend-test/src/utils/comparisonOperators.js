@@ -5,9 +5,6 @@ export const comparisonOperators = [
   { label: 'Lower than', value: '<' },
   { label: 'Greater than or equal', value: '>=' },
   { label: 'Lower than or equal', value: '<=' }
-  // { label: 'Begins with', value: (word) => `"${word}%"` },
-  // { label: 'Ends with', value: (word) => `"%${word}"` },
-  // { label: 'Contains', value: (word) => `"%${word}%"` }
 ]
 
 export const columnNames = [

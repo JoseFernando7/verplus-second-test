@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  frontend-app:
+    container_name: frontend-app
+    image: frontend-app:1.0.0
+    build: 
+      context: ./frontend-test
+    ports:
+      - "9000:9000"
+    depends_on:
+      - backend-app
+
+  backend-app:
+    container_name: backend-app
+    image: backend-app:1.0.0
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - DATABASE_PORT
+      - SPRING_DATASOURCE_URL
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+    depends_on:
+      - app-db
+
+  app-db:
+    container_name: app-db
+    image: postgres:12
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
