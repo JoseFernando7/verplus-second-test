@@ -1,17 +1,13 @@
 package com.josef7.backendtest.model;
 
 import com.josef7.backendtest.service.ListObjectConverter;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 
 import java.util.List;
 
-@Entity
-public class Query
+public class QueryRequest
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "query_name")
     private String query_name;
 
@@ -24,18 +20,6 @@ public class Query
 
     @Column(name = "comment")
     private String comment;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getQuery_name() {
         return query_name;
@@ -76,9 +60,5 @@ public class Query
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

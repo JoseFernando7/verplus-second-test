@@ -1,6 +1,7 @@
 package com.josef7.backendtest.controller;
 
 import com.josef7.backendtest.model.Query;
+import com.josef7.backendtest.model.User;
 import com.josef7.backendtest.repository.QueryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,10 @@ public class QueryController
         return queryRepository.findAll();
     }
 
-    @GetMapping("/query/{query_id}")
-    public ResponseEntity<Optional<Query>> getUserQueries(@PathVariable Long query_id)
+    @GetMapping("/one-query/{query_id}")
+    public User getOneQuery(@PathVariable Long query_id)
     {
-        Optional<Query> query = queryRepository.findById(query_id);
-
-        return ResponseEntity.ok(query);
+        return queryRepository.findId1Query(query_id);
     }
 
     @PostMapping("/add-query")

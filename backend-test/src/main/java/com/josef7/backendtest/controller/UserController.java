@@ -1,6 +1,10 @@
 package com.josef7.backendtest.controller;
 
+import com.josef7.backendtest.model.Query;
+import com.josef7.backendtest.model.QueryRequest;
 import com.josef7.backendtest.model.User;
+import com.josef7.backendtest.model.UserRequest;
+import com.josef7.backendtest.repository.QueryRepository;
 import com.josef7.backendtest.repository.UserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,11 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/users")
 public class UserController
 {
     @Autowired
     private UserRespository userRespository;
+
+    @Autowired
+    private QueryRepository queryRepository;
 
     @GetMapping("/")
     public List<User> getUsers()
@@ -29,10 +37,30 @@ public class UserController
     }
 
     @PostMapping("/add-user")
-    public ResponseEntity<User> addUser(@RequestBody User newUser)
+    public ResponseEntity<String> addUser(@RequestBody UserRequest newUser)
     {
-        User savedUser = userRespository.save(newUser);
+        // Create a User instance and assign values from request
+        User user = new User();
+        user.setName(newUser.getUsername());
 
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        List<QueryRequest> queryRequests = newUser.getQueries();
+        if (queryRequests != null)
+        {
+            for (QueryRequest queryRequest : queryRequests)
+            {
+                Query query = new Query();
+                query.setQuery_name(queryRequest.getQuery_name());
+                query.setOther_column(queryRequest.getOther_column());
+                query.setRank_column(queryRequest.getRank_column());
+                query.setComment(queryRequest.getComment());
+
+                user.getQueries().add(query);
+                query.setUser(user);
+            }
+        }
+
+        userRespository.save(user);
+
+        return ResponseEntity.ok("Data almacenado con éxito");
     }
 }

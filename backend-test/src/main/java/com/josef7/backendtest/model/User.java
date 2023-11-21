@@ -2,6 +2,7 @@ package com.josef7.backendtest.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,10 +13,11 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "username")
     private String name;
 
-    @OneToMany(mappedBy = "user")
-    private List<Query> queries;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Query> queries = new ArrayList<>();
 
     public Long getId() {
         return id;
